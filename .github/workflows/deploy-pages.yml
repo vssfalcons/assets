@@ -42,8 +42,12 @@ jobs:
       - name: Prepare static site
         shell: bash
         run: |
+          rm -rf _site
           mkdir _site
-          cp -R store index.html CNAME .nojekyll LICENSE _site/
+          cp -R index.html CNAME .nojekyll LICENSE _site/
+          for dir in */; do
+            [[ -d "$dir" && "$dir" != "_site/" ]] && cp -R -- "$dir" _site/
+          done
 
       - name: Upload static site
         uses: actions/upload-pages-artifact@v5
